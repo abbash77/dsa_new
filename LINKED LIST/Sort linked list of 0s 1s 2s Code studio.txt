@@ -1,0 +1,44 @@
+void insertattail(Node* &tail,Node* curr){
+	tail->next=curr;
+	tail=curr;
+}
+Node* sortList(Node *head)
+{
+    // Write your code here.
+	Node* zerohead=new Node(-1);
+	Node* zerotail=zerohead;
+	Node* firsthead=new Node(-1);
+	Node* firsttail=firsthead;
+	Node* secondhead=new Node(-1);
+	Node* secondtail=secondhead;
+	Node* curr=head;
+	//creating separate list 0s 1s 2s
+	while(curr!=NULL){
+		if(curr->data==0){
+			insertattail(zerotail,curr);
+		}
+		else if(curr->data==1){
+			insertattail(firsttail,curr);
+		}
+		else if(curr->data==2){
+			insertattail(secondtail,curr);
+		}
+		curr=curr->next;
+	}
+	//merge 3 sublist
+	if(firsthead->next!=NULL){//1s list is non empty
+		zerotail->next=firsthead->next;
+	}
+	else{
+		zerotail->next=secondhead->next;
+	}
+	firsttail->next=secondhead->next;
+	secondtail->next=NULL;
+	//setup head
+	head=zerohead->next;
+	//delete dummy nodes
+	delete(zerohead);
+	delete(firsthead);
+	delete(secondhead);
+	return head;
+}

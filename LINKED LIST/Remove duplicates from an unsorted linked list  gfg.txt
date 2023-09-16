@@ -1,0 +1,26 @@
+public:
+    //Function to remove duplicates from unsorted linked list.
+    Node * removeDuplicates( Node *head) 
+    {
+     // your code goes here
+     if(head==NULL||head->next==NULL){
+         return head;
+     }
+     unordered_map<int,int> ans;
+     Node* temp=head;
+     Node* prev=NULL;
+     while(temp!=NULL){
+         if(ans[temp->data]==1){
+             Node* dummy=temp->next;
+             prev->next=temp->next;
+             delete(temp);
+             temp=dummy;
+         }
+         else{
+            ans[temp->data]++;
+            prev=temp;
+            temp=temp->next;
+         }
+     }
+    return head;
+    }

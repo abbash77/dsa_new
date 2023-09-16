@@ -1,0 +1,17 @@
+Node* make(int pre[],int &i,int upperBound,int size){
+     if(i>=size || pre[i]>upperBound) return NULL;
+   Node* root=newNode(pre[i++]);
+   root->left=make(pre,i,root->data,size);
+   root->right=make(pre,i,upperBound,size);
+   
+   return root;
+}
+Node* post_order(int pre[], int size)
+{
+    //code here
+    if(!size) return NULL;
+   int i=0;
+   Node* root=make(pre,i,INT_MAX,size);
+   
+   return root;
+}

@@ -1,0 +1,30 @@
+#include<vector>
+bool checkPalindrome(string s)
+{
+	vector<char> abc;
+	for(int i=0;i<s.length();i++){
+		if(s[i]>=47&&s[i]<=57||s[i]>=65&&s[i]<=90||s[i]>=97&&s[i]<=122){
+			if(s[i]>=65&&s[i]<=90){
+				s[i]=s[i]+32;
+				abc.push_back(s[i]);
+			}
+			else{
+				abc.push_back(s[i]);
+			}
+			
+		}
+	}
+	if(abc.empty()){
+		return true;
+	}
+	for(int i=0;i<=abc.size()/2;i++){
+		if(abc[i]==abc[abc.size()-1-i]){
+			
+		}
+		else{
+			return false;
+		}
+	}
+		return true;
+	
+}

@@ -1,0 +1,17 @@
+BinaryTreeNode<int>* make(vector<int> &preorder,int min,int max,int &a){
+    if(a>=preorder.size()){
+        return NULL;
+    }
+    if(preorder[a]<min||preorder[a]>max){
+        return NULL;
+    }
+    BinaryTreeNode<int>* root=new BinaryTreeNode<int>(preorder[a++]);
+    root->left=make(preorder,min,root->data,a);
+    root->right=make(preorder,root->data,max,a);
+    return root;
+}
+BinaryTreeNode<int>* preorderToBST(vector<int> &preorder) {
+    // Write your code here.
+    int a=0;
+    return make(preorder,INT_MIN,INT_MAX,a);
+}

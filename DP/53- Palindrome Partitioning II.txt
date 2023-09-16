@@ -1,0 +1,64 @@
+memoization
+-------------------------------------------------
+bool isPalindrome(int i,int j,string s){
+        while(i<j){
+            if(s[i]!=s[j]){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+    int recur(int i,string &s,vector<int> &dp){
+        if(i==s.length()){
+            return 0;
+        }
+        if(dp[i]!=-1){
+            return dp[i];
+        }
+        int mini=1e9;
+        
+        for(int j=i;j<s.length();j++){
+            if(isPalindrome(i,j,s)){
+                int ans=1+recur(j+1,s,dp);
+                mini=min(mini,ans);
+            }
+        }
+        return dp[i]= mini;
+    }
+    int minCut(string s) {
+        int n=s.length();
+        vector<int> dp(n, -1);
+        return recur(0,s,dp)-1;
+    }
+------------------------------------------------
+Dp
+------------------------------------------------
+bool isPalindrome(int i,int j,string &s){
+        while(i<j){
+            if(s[i]!=s[j]){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+    int minCut(string s) {
+        int n=s.length();
+        vector<int> dp(n+1, 0);
+        int b=0;
+        int a=0;
+        for(int i=n-1;i>=0;i--){
+            int mini=1e9;
+            for(int j=i;j<s.length();j++){
+                if(isPalindrome(i,j,s)){
+                    int ans=1+dp[j+1];
+                    mini=min(mini,ans);
+                }
+            }
+            dp[i]= mini;
+        }
+        return dp[0]-1;
+    }

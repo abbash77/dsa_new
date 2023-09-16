@@ -1,0 +1,129 @@
+memoization
+--------------------------------------------------------
+int recur(int i,int prev,vector<int>& nums,vector<vector<int>> &dp){
+        if(i==nums.size()){
+            return 0;
+        }
+        if(dp[i][prev+1]!=-1){
+            return dp[i][prev+1];
+        }
+        int notTake=recur(i+1,prev,nums,dp);
+        int take=0;
+        if(prev==-1||nums[prev]<nums[i]){
+            take=1+recur(i+1,i,nums,dp);
+            
+        }
+        return dp[i][prev+1]= max(notTake,take);
+        
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> dp(n,vector<int>(n+1,-1));
+        return recur(0,-1,nums,dp);
+    }
+---------------------------------------------------
+DP
+-----------------------------------------------------
+int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        for(int i=n-1;i>=0;i--){
+            for(int j=i-1;j>=-1;j--){
+                int notTake=dp[i+1][j+1];
+                int take=0;
+                if(j==-1||nums[j]<nums[i]){
+                    take=1+dp[i+1][i+1];
+
+                }
+                dp[i][j+1]= max(notTake,take);
+            }
+        }
+        return dp[0][-1+1];
+    }
+-------------------------------------------------
+space 
+-------------------------------------------------
+int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> after(n+1,0);
+        vector<int> curr(n+1,0);
+        for(int i=n-1;i>=0;i--){
+            for(int j=i-1;j>=-1;j--){
+                int notTake=after[j+1];
+                int take=0;
+                if(j==-1||nums[j]<nums[i]){
+                    take=1+after[i+1];
+
+                }
+                curr[j+1]= max(notTake,take);
+            }
+            after=curr;
+        }
+        return curr[-1+1];
+    }
+-------------------------------------------------
+another way
+-------------------------------------------------------
+int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        int ans=1;
+        vector<int> dp(n,1);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(nums[i]>nums[j]){
+                    int a=1+dp[j];
+                    dp[i]=max(a,dp[i]);
+                    ans=max(ans,dp[i]);
+                }
+            }
+        }
+        return ans;
+    }
+------------------------------------------
+printing the lis
+-----------------------------------------------------
+int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        int lastIndex=0;
+        vector<int> dp(n,1),hash(n);
+        for(int i=0;i<n;i++){
+            hash[i]=i;
+            for(int j=0;j<i;j++){
+                if(nums[i]>nums[j]){
+                    int a=1+dp[j];
+                    dp[i]=max(a,dp[i]);
+                    hash[i]=j;
+                    ans=max(ans,dp[i]);
+                }
+            }
+            if(dp[i]>maxi){
+                lastIndex=i;
+            }
+        }
+        vector<int> temp;
+        temp.push_back(arr[lastIndex]);
+        while(hash[lastIndex]!=lastIndex){
+            lastIndex=hash[lastIndex];
+            temp.push_back(arr[lastIndex]);
+        }
+        reverse(temp.begin(),temp.end());
+    }
+----------------------------------------------------------
+Binary search
+----------------------------------------------------------
+int lengthOfLIS(vector<int>& nums) {
+        vector<int> ans;
+        ans.push_back(nums[0]);
+        int len=1;
+        for(int i=1;i<nums.size();i++){
+            if(nums[i]>ans[ans.size()-1]){
+                ans.push_back(nums[i]);
+                len++;
+            }
+            else{
+                int idx=lower_bound(ans.begin(),ans.end(),nums[i])-ans.begin();         
+                ans[idx]=nums[i];
+            }
+        }
+        return len;
+    }

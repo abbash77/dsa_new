@@ -1,0 +1,22 @@
+sort(candies,candies+N);
+        
+        int s=0;
+        int e=N-1;
+        int minCost=0;
+        while(s<=e){
+            minCost+=candies[s];
+            e=e-K;
+            s++;
+        }
+        
+        int maxCost=0;
+        int st=0;
+        int et=N-1;
+        while(st<=et){
+            maxCost+=candies[et];
+            st=st+K;
+            et--;
+        }
+        
+        vector<int> ans{minCost,maxCost};
+        return ans;

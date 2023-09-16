@@ -1,0 +1,63 @@
+memoization
+-----------------------------------------------------
+int recur(int n1,int n2,string & str1, string & str2,vector<vector<int>> &dp){
+  if(n1<0||n2<0){
+    return 0;
+  }
+  if(dp[n1][n2]!=-1){
+    return dp[n1][n2];
+  }
+  if(str1[n1]==str2[n2]){
+    return dp[n1][n2]= 1+recur(n1-1,n2-1,str1,str2,dp);
+  }
+  else{
+    return dp[n1][n2]= max(recur(n1-1,n2,str1,str2,dp),recur(n1,n2-1,str1,str2,dp));
+  }
+}
+int getLengthOfLCS(string & str1, string & str2) {
+  // Write your code here.
+  int n1=str1.length();
+  int n2=str2.length();
+  vector<vector<int>> dp( n1,vector<int>(n2,-1));
+  return recur(n1-1,n2-1,str1,str2,dp);
+}
+------------------------------------------------------
+DP
+------------------------------------------------------
+int getLengthOfLCS(string & str1, string & str2) {
+  // Write your code here.
+  int n1=str1.length();
+  int n2=str2.length();
+vector<vector<int>> dp( n1+1,vector<int>(n2+1,0));
+  //shift index by 1 to write tabulation
+  for(int i=1;i<n1+1;i++){
+    for(int j=1;j<n2+1;j++){
+      if(str1[i-1]==str2[j-1]){
+        dp[i][j]= 1+dp[i-1][j-1];
+      }
+      else{
+        dp[i][j]= max(dp[i-1][j],dp[i][j-1]);
+      }
+    }
+  }
+  return dp[n1][n2];
+}
+--------------------------------------------------
+space optimisation
+--------------------------------------------------
+int n1=str1.length();
+  int n2=str2.length();
+  vector<int> prev(n2+1,0);
+  for(int i=1;i<n1+1;i++){
+    vector<int> curr(n2+1,0);
+    for(int j=1;j<n2+1;j++){
+      if(str1[i-1]==str2[j-1]){
+        curr[j]= 1+prev[j-1];
+      }
+      else{
+        curr[j]= max(prev[j],curr[j-1]);
+      }
+    }
+    prev=curr;
+  }
+  return prev[n2];

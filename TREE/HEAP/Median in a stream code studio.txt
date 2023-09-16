@@ -1,0 +1,63 @@
+#include<queue>
+int signum(int a,int b){
+    if(a==b){
+        return 0;
+    }
+    else if(a>b){
+        return 1;
+    }
+    else{
+         return -1;
+    }
+   
+}
+void callMedian(int element,vector<int> arr,priority_queue<int> &max_heap, priority_queue<int,vector<int>,greater<int>> &min_heap,int &median){
+    switch(signum(max_heap.size(),min_heap.size())){
+        case 0: if(element>median){//median ke right part me insert krna hh //n n ...............right part me min heap hh aur left me maxheap
+            min_heap.push(element);
+            median=min_heap.top();
+            }
+            else{
+                max_heap.push(element);
+                median=max_heap.top();
+            }
+            break;
+        case 1: if(element>median){// n n-1
+                min_heap.push(element);
+                median=(min_heap.top()+max_heap.top())/2;
+            }
+            else{
+                min_heap.push(max_heap.top());
+                max_heap.pop();
+                max_heap.push(element);
+                median=(min_heap.top()+max_heap.top())/2;
+            }
+            break;
+        case -1: if(element>median){// n-1 n
+                    max_heap.push(min_heap.top());
+                    min_heap.pop();
+                    min_heap.push(element);
+                    median=(min_heap.top()+max_heap.top())/2;
+                }
+            else{
+                max_heap.push(element);
+                 median=(min_heap.top()+max_heap.top())/2;
+            }
+            break;
+            
+               
+    }
+}
+vector<int> findMedian(vector<int> &arr, int n){
+	
+	// Write your code here 
+    vector<int> ans;
+    priority_queue<int> max_heap;
+    priority_queue<int,vector<int>,greater<int>> min_heap;
+    int median=0;
+    for(int i=0;i<n;i++){
+        callMedian(arr[i],arr,max_heap,min_heap,median);
+        ans.push_back(median);
+    }
+    return ans;
+}

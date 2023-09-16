@@ -1,0 +1,22 @@
+bool findPair(Node* head, int k)
+{
+    // Write your code here.
+	Node* start=head;
+	Node* end=head;
+	while(end->next!=NULL){
+		end=end->next;
+	}
+	while(start!=end){
+		if(start->data+end->data==k){
+			return true;
+		}
+		else if(start->data+end->data<k){
+			start=start->next;
+		}
+		else if(start->data+end->data>k){
+			end=end->prev;
+		}
+		
+	}
+	return false;
+}

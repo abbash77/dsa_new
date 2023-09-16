@@ -1,0 +1,61 @@
+void dfs(vector<vector<int>>& adj , stack<int>&stk , int src , vector<bool>&visited)
+    {
+        visited[src]=true;
+        for(int x : adj[src])
+        {
+            if(visited[x]==false)
+            {
+                dfs(adj , stk , x , visited);
+            }
+        }
+        stk.push(src);
+    }
+    void dfsTrav(vector<int>adj[] , int src , vector<bool>&visited)
+    {
+        visited[src]=true;
+        for(int x : adj[src])
+        {
+            if(visited[x]==false)
+            {
+                dfsTrav(adj , x , visited);
+            }
+        }
+    }
+    
+    int kosaraju(int V, vector<vector<int>>& adj)
+    {
+        //code here
+        stack<int>stk;
+        vector<bool>visited(V,false);
+        for(int i=0 ; i<V ; i++)
+        {
+            if(visited[i]==false)
+            {
+                dfs(adj , stk , i , visited);
+            }
+        }
+        
+        vector<int> newadj[V];
+        for(int i=0 ; i<adj.size() ; i++)
+        {
+            for(int j=0 ; j<adj[i].size() ; j++)
+            {
+                newadj[adj[i][j]].push_back(i);
+            }
+        }
+        
+        int res=0;
+        vector<bool>visited1(V,false);
+        while(!stk.empty())
+        {
+            int src= stk.top();
+            stk.pop();
+            if(!visited1[src])
+            {
+                dfsTrav(newadj , src , visited1); 
+                res++;
+            }
+        }
+        
+        return  res;
+    }

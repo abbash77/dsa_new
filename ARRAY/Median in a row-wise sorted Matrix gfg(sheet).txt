@@ -1,0 +1,36 @@
+vector<int> merge(vector<int> &a, vector<int> &b){
+        int m = a.size();
+        int n= b.size();
+        int i=0,j=0,k=0;
+        vector<int> c(m+n);
+        while(i<m && j<n){
+            if(a[i]<=b[j]){
+                c[k] = a[i]; i++;k++;
+            }
+            else if(a[i]>=b[j]){
+                c[k] = b[j]; j++;k++;
+            }
+        }
+        if(i<m){
+            while(i<m){
+                c[k] = a[i];i++;k++;
+            }
+        }
+        if(j<n){
+            while(j<n){
+                c[k] = b[j];j++;k++;
+            }
+        }
+        return c;
+    }
+class Solution{   
+public:
+    int median(vector<vector<int>> &matrix, int r, int c){
+        // code here     
+         vector<int> v;
+        for(int i=0;i<r;i++){
+            v = merge(v,matrix[i]);
+        }
+        return v[(r*c)/2];
+    }
+};

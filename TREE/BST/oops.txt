@@ -1,0 +1,3 @@
+Encapsulation is the process of binding data members and methods of a program together to do a specific job, without revealing unnecessary details
+Inheritance is a feature or a process in which, new classes are created from the existing classes.
+class is a user defined datatype that has its own data member and member function

@@ -1,0 +1,50 @@
+Node* merge(Node* left,Node* right){
+	//iterative method of merging
+	if(left==NULL){
+		return right;
+	}
+	if(right==NULL){
+		return left;
+	}
+	Node* dummy=new Node(-1);
+	Node* temp=dummy;
+	while(left!=NULL&&right!=NULL){
+		if(left->data<right->data){
+			temp->child=left;
+			temp=left;
+			left=left->child;
+		}
+		else{
+			temp->child=right;
+			temp=right;
+			right=right->child;
+		}
+	}
+	while(left!=NULL){
+		temp->child=left;
+			temp=left;
+			left=left->child;
+	}
+	while(right!=NULL){
+		temp->child=right;
+			temp=right;
+			right=right->child;
+	}
+	dummy=dummy->child;
+	return dummy;
+	
+}
+Node* flattenLinkedList(Node* head) 
+{
+	// Write your code here
+	if(head==NULL||head->next==NULL){
+		return head;
+	}
+	Node* down=head;
+	Node* next=head->next;
+	down->next=NULL;
+	next=flattenLinkedList(next);
+	Node* result=merge(down,next);
+	return result;
+	
+}

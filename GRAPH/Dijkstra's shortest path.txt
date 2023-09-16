@@ -1,0 +1,38 @@
+#include <bits/stdc++.h> 
+#include<unordered_map>
+#include<list>
+vector<int> dijkstra(vector<vector<int>> &vec, int vertices, int edges, int source) {
+    // Write your code here.
+    unordered_map<int,list<pair<int,int>>> adj;
+    for(int i=0;i<vec.size();i++){
+        int u=vec[i][0];
+        int v=vec[i][1];
+        int w=vec[i][2];
+        adj[u].push_back({v,w});
+        adj[v].push_back({u,w});
+    }
+    //dist node
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> s;
+    vector<int> dist(vertices);
+    for(int i=0;i<vertices;i++){
+        dist[i]=INT_MAX;
+    }
+    dist[source]=0;
+    s.push({0,source});
+    while(!s.empty()){
+        auto top=s.top();
+        int nodeDistance=top.first;
+        int topNode=top.second;
+        s.pop();
+        for(auto neighbour:adj[topNode]
+        ){
+            if(nodeDistance+neighbour.second<dist[neighbour.first]){
+                dist[neighbour.first]=nodeDistance+neighbour.second;
+                s.push({nodeDistance+neighbour.second,neighbour.first});
+            }
+        }
+        
+    }
+    return dist;
+}
+

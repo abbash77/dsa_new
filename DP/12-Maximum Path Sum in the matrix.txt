@@ -1,0 +1,94 @@
+memoization
+-------------------------------------------------------
+int recur(int m,int n,vector<vector<int>> &matrix,vector<vector<int>>& dp){
+    if(n<0||n>=matrix[0].size()){
+        return INT_MIN;
+    }
+    if(m==0){
+        return matrix[m][n];
+    }
+    if(dp[m][n]!=-1){
+        return dp[m][n];
+    }
+    int a=recur(m-1,n,matrix,dp);
+    int b=recur(m-1,n-1,matrix,dp);
+    int c=recur(m-1,n+1,matrix,dp);
+    return dp[m][n]=matrix[m][n]+max(a,max(b,c));
+}
+
+int getMaxPathSum(vector<vector<int>> &matrix)
+{
+    //  Write your code here.
+    int m=matrix.size();
+    int n=matrix[0].size();
+    vector<vector<int>> dp(m,vector<int>(n,-1));
+    
+    int maxi=INT_MIN;
+    for(int i=0;i<n;i++){
+        vector<vector<int>> dp(m,vector<int>(n,-1));
+        maxi=max(maxi,recur(m-1,i,matrix,dp));
+    }
+    return maxi;
+}
+----------------------------------------------------------
+DP
+----------------------------------------------------------
+int m=matrix.size();
+    int n=matrix[0].size();
+    vector<vector<int>> dp(m,vector<int>(n,0));
+    for(int i=0;i<n;i++){
+        dp[0][i]=matrix[0][i];
+    }
+    
+    for(int i=1;i<m;i++){
+        for(int j=0;j<n;j++){
+            int a=dp[i-1][j];
+            int b=INT_MIN;
+            int c=INT_MIN;
+            if(j+1<n){
+                b=dp[i-1][j+1];
+            }
+            if(j-1>=0){
+                c=dp[i-1][j-1];
+            }
+            dp[i][j]=matrix[i][j]+max(a,max(b,c));
+        }
+    }
+    int maxi=INT_MIN;
+    for(int i=0;i<n;i++){
+        maxi=max(maxi,dp[m-1][i]);
+    }
+    return maxi;
+---------------------------------------------------------
+space optimisation
+---------------------------------------------------------
+
+int m=matrix.size();
+    int n=matrix[0].size();
+    
+    vector<int> dp(n,0);
+    for(int i=0;i<n;i++){
+        dp[i]=matrix[0][i];
+    }
+    
+    for(int i=1;i<m;i++){
+        vector<int> temp(n,0);
+        for(int j=0;j<n;j++){
+            int a=dp[j];
+            int b=INT_MIN;
+            int c=INT_MIN;
+            if(j+1<n){
+                b=dp[j+1];
+            }
+            if(j-1>=0){
+                c=dp[j-1];
+            }
+            temp[j]=matrix[i][j]+max(a,max(b,c));
+        }
+        dp=temp;
+    }
+    int maxi=INT_MIN;
+    for(int i=0;i<n;i++){
+        maxi=max(maxi,dp[i]);
+    }
+    return maxi;

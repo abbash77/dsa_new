@@ -1,0 +1,30 @@
+ Node* lca(Node* root , int a , int b){
+        if(!root) return nullptr;
+        if(root->data == a || root->data == b){
+            return root;
+        }
+        Node* lst = lca(root->left , a , b);
+        Node* rst = lca(root->right , a , b);
+        if(!lst) return rst;
+        if(!rst) return lst;
+        return root;
+    }
+    void traverse(Node* ancestor , int a , int b , int& l1 , int &l2 , int level){
+        if(ancestor){
+            if(ancestor->data == a && l1 == -1){
+                l1 = level;
+            }
+            if(ancestor->data == b && l2 == -1){
+                l2 = level;
+            }
+            traverse(ancestor->left , a , b , l1 , l2 , level + 1);
+            traverse(ancestor->right , a , b , l1 , l2 , level + 1);
+        }
+    }
+    int findDist(Node* root, int a, int b) {
+        // Your code here
+        Node* ancestor = lca(root , a , b);
+        int l1 = -1 , l2 = -1;
+        traverse(ancestor,a,b,l1,l2,0);
+        return l1+l2;
+    }

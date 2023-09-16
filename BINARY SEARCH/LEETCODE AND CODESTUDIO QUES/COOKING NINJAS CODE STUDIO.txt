@@ -1,0 +1,56 @@
+int maxDishesForGivenTime(long time,long maxTime){
+	//this function will return the maximum no of dishes that can be made in the given time.
+	int dishes = 0;
+	int step = 1;
+	long totalTime= time;
+	while(totalTime<=maxTime){
+		dishes++;
+		step++;
+		totalTime += (time*step);
+	}
+	return dishes;
+}
+
+bool isPossible(vector<int> &rank, int m, long mid){
+	int totalDishes=0;
+	for(int i=0;i<rank.size();i++){
+		totalDishes += maxDishesForGivenTime(rank[i],mid);
+	}
+	// the logic is that if the summation of max no of dishes prepared by the cook is greater than or equal to m then only it can be considered as the possible solution
+	return totalDishes>=m;	
+}
+
+int minCookTime(vector<int> &rank, int m)
+{
+    // Write your code here
+	long s = 0;
+	int maxi = 0;
+	for(int i=0; i<rank.size(); i++) maxi = max(maxi,rank[i]);
+	int k=m;
+	long e=0;
+	int step=1;
+	while(k--){
+		e += maxi*step;
+		step++;
+	}
+	if(rank.size()==1){
+		return e;
+	}
+	
+	int ans = -1;
+	int mid = s + (e-s)/2;
+	
+	while(s<=e){
+		
+		if(isPossible(rank,m,mid)){
+			ans = mid;
+
+			e = mid-1;
+		}else{
+			s = mid+1;
+		}
+		mid = s + (e-s)/2;
+	}
+	
+	return ans;
+}

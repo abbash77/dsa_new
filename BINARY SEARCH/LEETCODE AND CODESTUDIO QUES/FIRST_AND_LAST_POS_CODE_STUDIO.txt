@@ -1,0 +1,50 @@
+int firstoccur(vector<int>& arr, int n, int k){
+	int start=0;
+    int end=n-1;
+    int mid=(start+end)/2;
+    int min=-1;
+    while(start<=end){
+        if(arr[mid]==k){
+            min=mid;
+            end=mid-1;
+        }
+        else if(arr[mid]>k){
+            end=mid-1;
+        }
+        else if(arr[mid]<k){
+            start=mid+1;
+        }
+        mid=(start+end)/2;
+    }
+	return min;
+}
+int lastoccur(vector<int>& arr, int n, int k){
+	int start=0;
+    int end=n-1;
+    int mid=(start+end)/2;
+    int max=-1;
+    while(start<=end){
+        if(arr[mid]==k){
+            max=mid;
+            start=mid+1;
+        }
+        else if(arr[mid]>k){
+            end=mid-1;
+        }
+        else if(arr[mid]<k){
+            start=mid+1;
+        }
+        mid=(start+end)/2;
+    }
+	return max;
+}
+pair<int, int> firstAndLastPosition(vector<int>& arr, int n, int k)
+{
+    // Write your code here
+	int min=firstoccur(arr,n,k);
+	int max=lastoccur(arr,n,k);
+	pair<int,int> obj;
+	obj.first=min;
+	obj.second=max;
+    return obj;
+}

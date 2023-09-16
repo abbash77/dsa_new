@@ -1,0 +1,46 @@
+private:
+        void insertattail(Node* &head,Node* &tail,int d){
+            Node* newNode=new Node(d);
+            if(head==NULL){
+                head=newNode;
+                tail=newNode;
+                return;
+                
+            }
+            else{
+                tail->next=newNode;
+                tail=newNode;
+            }
+        }
+    public:
+    Node *copyList(Node *head)
+    {
+        //Write your code here
+        // step 1
+         //craete a clone list
+         Node* clonehead=NULL;
+         Node* clonetail=NULL;
+         Node* temp=head;
+         while(temp!=NULL){
+             insertattail(clonehead,clonetail,temp->data);
+             temp=temp->next;
+         }
+         //step 2 create a map
+         unordered_map<Node*,Node*> oldtonewnode;
+         Node* originalnode=head;
+         Node* clonenode=clonehead;
+         while(originalnode!=NULL&&clonenode!=NULL){
+             oldtonewnode[originalnode]=clonenode;
+             originalnode=originalnode->next;
+             clonenode=clonenode->next;
+         }
+         originalnode=head;
+         clonenode=clonehead;
+         while(originalnode!=NULL){
+             clonenode->arb=oldtonewnode[originalnode->arb];
+             originalnode=originalnode->next;
+             clonenode=clonenode->next;
+         }
+         return clonehead;
+         
+    }

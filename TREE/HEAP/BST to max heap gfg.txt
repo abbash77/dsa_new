@@ -1,0 +1,31 @@
+class Solution{
+ public:
+ void inorder(Node* root ,vector<int>&inoder)
+ {
+     if(root==NULL)
+     {
+         return;
+     }
+     inorder(root->left,inoder);
+     inoder.push_back(root->data);
+     inorder(root->right,inoder);
+ }
+ void BSTtoMaxH(Node* root , vector<int>&inoder ,int &index)
+ {
+     if(root==NULL) return ;
+     
+     BSTtoMaxH(root->left,inoder,index);
+     BSTtoMaxH(root->right,inoder,index);
+     root->data =inoder[index];
+     index++;
+     
+ }
+   void convertToMaxHeapUtil(Node* root)
+   {
+       // Your code goes here
+       vector<int>inoder;
+       inorder(root,inoder);
+       int index =0;
+       BSTtoMaxH(root,inoder,index);
+   }    
+};

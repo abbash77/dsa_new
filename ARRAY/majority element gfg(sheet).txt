@@ -1,0 +1,22 @@
+class Solution{
+  public:
+     // Function to find majority element in the array
+    // a: input array
+    // size: size of input array
+    int majorityElement(int a[], int size)
+    {
+        
+        // your code here
+        vector<int> ans(1000000,0);
+    for(int i=0;i<size;i++){
+        ans[a[i]]++;
+    }
+    for(int i=0;i<1000000;i++){
+        if(ans[i]>size/2){
+            return i;
+        }
+    }
+    return -1;
+        
+    }
+};

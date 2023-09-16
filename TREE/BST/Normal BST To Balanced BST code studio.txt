@@ -1,0 +1,27 @@
+void inOrder(TreeNode<int>* root,vector<int>& inorderVal){
+    if(root==NULL){
+        return;
+    }
+    inOrder(root->left,inorderVal);
+    inorderVal.push_back(root->data);
+    inOrder(root->right,inorderVal);  
+}
+TreeNode<int>* make(vector<int>& inorderVal,int s,int e){
+    if(s>e){
+        return NULL;
+    }
+    int mid=(s+e)/2;
+    TreeNode<int>* temp=new TreeNode<int>(inorderVal[mid]);
+    temp->left=make(inorderVal,s,mid-1);
+    temp->right=make(inorderVal,mid+1,e);
+    return temp;
+}
+TreeNode<int>* balancedBst(TreeNode<int>* root) {
+    // Write your code here.
+    vector<int> inorderVal;
+    inOrder(root,inorderVal);
+    int n=inorderVal.size();
+    int s=0;
+    int e=n-1;
+    return make(inorderVal,s,e);
+}

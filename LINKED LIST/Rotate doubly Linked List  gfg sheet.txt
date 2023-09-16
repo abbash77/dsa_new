@@ -1,0 +1,30 @@
+class Solution {
+public:
+    Node *update(Node *start,int p)
+    {
+        //Add your code here
+        Node* head=start;
+        int cnt=0;
+        while(cnt<p){
+            head=head->next;
+            cnt++;
+        }
+        Node* end=start;
+        while(end->next!=NULL){
+            end=end->next;
+        }
+        for(int i=0;i<p;i++){
+            end->next=start;
+            Node* start2=start->next;
+            start->prev=end;
+            start->next=NULL;
+            end=start;
+            start=start2;
+            
+        }
+        head->prev=NULL;
+        
+        return head;
+        
+    }
+};

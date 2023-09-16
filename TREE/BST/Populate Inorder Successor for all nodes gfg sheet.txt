@@ -1,0 +1,24 @@
+void save(vector<Node*>& inorder,Node* root){
+        if(root==NULL){
+            return;
+        }
+        save(inorder,root->left);
+        inorder.push_back(root);
+        save(inorder,root->right);
+    }
+    void populateNext(Node *root)
+    {
+        //code here
+        vector<Node*> arr;
+        save(arr,root);
+        for(int i=0;i<arr.size()-1;i++){
+            if(i+1<arr.size()){
+                arr[i]->next=arr[i+1];
+            }
+            else{
+               
+                Node* temp=new Node(-1);
+                arr[i]->next=temp;
+            }
+        }
+    }

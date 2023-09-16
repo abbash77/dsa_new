@@ -1,0 +1,90 @@
+class trieNode{
+    public:
+        char data;
+        trieNode* children[26];
+        bool isTerminal;
+        trieNode(char ch){
+            data=ch;
+            for(int i=0;i<26;i++){
+                children[i]==NULL;
+            }
+            isTerminal=false;
+        }
+};
+class trie{
+    public:
+        trieNode* root;
+        trie(){
+            root=new trieNode('\0');
+        }
+        void insertUtil(trieNode* root,string word){
+            //base case
+            if(word.length()==0){
+                root->isTerminal=true;//last character ko terminal node set kr rhe
+                return;
+            }
+            //assumption word will be in caps
+            int index=word[0] - 'a';
+            trieNode* child;
+            if(root->children[index]!=NULL){//present to bas aage badh jao
+                child=root->children[index];
+            }
+            else{//absent hh to naya bnake aage badh jao
+                child=new trieNode(word[0]);
+                root->children[index]=child;
+            }
+            //recursion
+            insertUtil(child,word.substr(1));//word ka first character chodke aage badh jao
+
+        }
+        void insertWord(string word){
+            insertUtil(root,word);
+        }
+    void printSuggestions(trieNode* curr,vector<string> &temp,string prefix){
+        if(curr->isTerminal){
+            temp.push_back(prefix);
+        }
+        for(char ch='a';ch<='z';ch++){
+            trieNode* next=curr->children[ch-'a'];
+            if(next!=NULL){
+                prefix.push_back(ch);
+                printSuggestions(next,temp,prefix);
+                prefix.pop_back();
+            }
+        }
+    }
+        vector<vector<string>> getSuggestions(string str){
+            trieNode* prev=root;
+            vector<vector<string>> output;
+            string prefix="";
+            for(int i=0;i<str.length();i++){
+                char lastch=str[i];
+                prefix.push_back(lastch);
+                //check for last character
+                trieNode* curr=prev->children[lastch-'a'];
+                //if not found
+                if(curr==NULL){
+                    break;
+                }
+//                 if found
+                vector<string > temp;
+                printSuggestions(curr,temp,prefix);
+                output.push_back(temp);
+                temp.clear();
+                prev=curr;
+            }
+            return output;
+        }
+};
+vector<vector<string>> phoneDirectory(vector<string>&contactList, string &queryStr)
+{
+    //    Write your code here.
+     trie* t=new trie();
+    //insert all contact in trie
+    for(int i=0;i<contactList.size();i++){
+        string str=contactList[i];
+        t->insertWord(str);
+    }
+    //return ans
+    return t->getSuggestions(queryStr);
+}

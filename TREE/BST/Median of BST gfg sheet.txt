@@ -1,0 +1,57 @@
+void inorder(struct Node* root, int &n){
+    
+    if(root == NULL) return;
+    
+    inorder(root->left, n);
+    n++;
+    inorder(root->right, n);
+    
+}
+
+
+void calc(Node* root, int &k, int &ans){
+    
+    
+    if(root == NULL){
+        return;
+    }
+    
+    calc(root->left, k, ans);
+    k--;
+    if(k == 0){
+        
+        k = INT_MAX;
+        ans = root->data;
+        return;
+        
+    }
+    calc(root->right, k, ans);
+    
+}
+float findMedian(struct Node *root)
+{
+      //Code here
+      int n = 0;
+      inorder(root, n);
+      
+      if(n&1){
+          int k = (n+1)/2;
+          int fans;
+          calc(root, k, fans);
+          return fans;
+      }
+      else{
+          int k = n/2;
+          
+          int first;
+          calc(root, k, first);
+          
+          int k2 = n/2 + 1;
+         
+          int second;
+          calc(root, k2, second);
+          
+          float ans = (first + second) / 2.0 ;
+          return ans;
+      }
+}

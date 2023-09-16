@@ -1,0 +1,33 @@
+bool isPossible(vector<int> A,int B, int mid){
+    int sum=0;
+    for(int i=0;i<A.size();i++){
+        if(A[i]-mid>=0){
+            sum+=A[i]-mid;
+        }
+        if(sum>=B){
+            return true;
+        }
+    }
+    return false;
+}
+int Solution::solve(vector<int> &A, int B) {
+    int s=0;
+    int e=INT_MIN;
+    for(int i=0;i<A.size();i++){
+        e=max(e,A[i]);
+    }
+    int mid=(s+e)/2;
+    int ans=-1;
+    while(s<=e){
+        if(isPossible(A,B,mid)){
+            ans=mid;
+            s=mid+1;
+        }
+        else{
+            e=mid-1;
+        }
+        mid=(s+e)/2;
+
+    }
+    return ans;
+}

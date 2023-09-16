@@ -1,0 +1,34 @@
+class BSTIterator {
+private:
+    TreeNode* pt;
+    stack<TreeNode*> s;
+	
+    void pushStack(TreeNode *node){
+        while(node!=nullptr){
+            s.push(node);
+            node=node->left;
+        }
+    }
+	// pushed the left subtree to the stack
+public:
+    BSTIterator(TreeNode* root) {
+        pt=root;
+        pushStack(pt);
+    }
+    
+    int next() {
+        TreeNode* temp=s.top();
+        s.pop();
+        pushStack(temp->right);
+        return temp->val;
+    }
+	
+    // We pop the top node return its value 
+	// then we push its right subtree to stack to continue inorder traversal
+	
+    bool hasNext() {
+        return !s.empty();
+    }
+	// if stack is empty then we have already traversed out tree
+    
+};

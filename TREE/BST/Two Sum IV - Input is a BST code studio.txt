@@ -1,0 +1,30 @@
+void inOrder(BinaryTreeNode<int>* root,vector<int>& inorderVal){
+    if(root==NULL){
+        return;
+    }
+    inOrder(root->left,inorderVal);
+    inorderVal.push_back(root->data);
+    inOrder(root->right,inorderVal);
+    
+}
+
+bool twoSumInBST(BinaryTreeNode<int>* root, int target) {
+	//Write your code here
+    vector<int> inorderVal;
+    inOrder(root,inorderVal);
+    int n=inorderVal.size();
+    int s=0;
+    int e=n-1;
+    while(s<e){
+        if(inorderVal[s]+inorderVal[e]==target){
+            return true;
+        }
+        else if(inorderVal[s]+inorderVal[e]>target){
+            e--;
+        }
+        else{
+            s++;
+        }
+    }
+    return false;
+}

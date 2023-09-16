@@ -1,0 +1,20 @@
+unordered_set<string> aa;
+    int ans=0;
+    string helper(Node* root){
+        if(root==NULL || ans==1){
+            return "";
+        }
+        string st;
+        st=root->data +helper(root->left)+helper(root->right);
+        if(st.size()>1 && aa.count(st)>0){//size two or more, or not.
+            ans=1;
+            return "";
+        }
+        aa.insert(st);
+        return st;
+    }
+    int dupSub(Node *root) {
+         // code here
+         helper(root);
+         return ans;
+    }

@@ -1,0 +1,32 @@
+ public:
+    //Function to return list containing elements of right view of binary tree.
+    vector<int> rightView(Node *root)
+    {
+       // Your Code here
+       vector<int> ans;
+        if(root==NULL){
+            return ans;
+        }
+        map<int,int> m;//level,node data
+        queue<pair<Node*,int>> q;
+        q.push(make_pair(root,0));
+        while(!q.empty()){
+            pair<Node*,int> temp=q.front();
+            q.pop();
+            Node* frontNode=temp.first;
+            int level=temp.second;
+            
+                m[level]=frontNode->data;
+       
+            if(frontNode->left){
+                q.push(make_pair(frontNode->left,level+1));
+            }
+            if(frontNode->right){
+                q.push(make_pair(frontNode->right,level+1));
+            }
+        }
+        for(auto i:m){
+            ans.push_back(i.second);
+        }
+        return ans;
+    }

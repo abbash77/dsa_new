@@ -1,0 +1,18 @@
+bool fn(Node* root,bool &ans,int min=1,int max=INT_MAX)
+{
+   if(!root)
+   {
+       if(min>max) return true;
+       return false;
+   }
+   bool l=fn(root->left,ans,min,root->data-1);
+   bool r=fn(root->right,ans,root->data+1,max);
+   if(l && r)ans=true; 
+   return l&&r;
+}
+bool isDeadEnd(Node *root)
+{
+   bool ans=false;
+   fn(root,ans);
+   return ans;
+}

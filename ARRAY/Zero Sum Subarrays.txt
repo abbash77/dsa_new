@@ -1,0 +1,16 @@
+ll findSubarray(vector<ll> arr, int n ) {
+        //code here
+        unordered_map<int,int> umap;
+        ll presum=0,ans=0;
+        umap[presum]=1;
+        
+        for(auto x:arr){
+            presum+=x;
+            
+            if(umap.find(presum)!=umap.end()){
+                ans+=umap[presum];
+            }
+            umap[presum]++;
+        }
+        return ans;
+    }

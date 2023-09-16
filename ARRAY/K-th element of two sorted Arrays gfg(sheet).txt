@@ -1,0 +1,31 @@
+int kthElement(int arr1[], int arr2[], int n, int m, int k)
+    {
+        vector<int> ans(n+m);
+        int a=0;
+        int b=0;
+        int i=0;
+        while(a<n&&b<m){
+            if(arr1[a]>arr2[b]){
+                ans[i]=arr2[b];
+                b++;
+                i++;
+            }
+            else{
+                ans[i]=arr1[a];
+                a++;
+                i++;
+            }
+        }
+        if(b<m){
+            for(int j=b;j<m;j++){
+                ans[i]=arr2[j];
+                i++;
+            }
+        }
+        else if(a<n){
+            for(int j=a;j<n;j++){
+                ans[i]=arr1[j];
+                i++;
+            }
+        }
+        return ans[k-1];

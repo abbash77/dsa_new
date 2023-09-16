@@ -1,0 +1,51 @@
+#include<algorithm>
+bool cmp(vector<int> &a,vector<int> &b){
+    return a[2]<b[2];
+}
+void makeSet(vector<int> &parent,vector<int> &rank,int n){
+    for(int i=0;i<n;i++){
+        parent[i]=i;
+        rank[i]=0;
+    }
+}
+int findParent(int node,vector<int> &parent){
+    if(parent[node]==node){
+        return node;
+    }
+    return parent[node]=findParent(parent[node],parent);
+}
+void unionSet(int u,int v,vector<int> &parent,vector<int> &rank){
+    int p1=findParent(u,parent);
+    int p2=findParent(v,parent);
+    if(rank[p1]<rank[p2]){
+        parent[p1]=p2;
+    }
+    else if(rank[p2]<rank[p1]){
+        parent[p2]=p1;
+    }
+    else{
+        parent[p2]=p1;
+        rank[p1]++;
+    }
+}
+int minimumSpanningTree(vector<vector<int>>& edges, int n)
+{
+    sort(edges.begin(),edges.end(),cmp);
+    vector<int> parent(n);
+    vector<int> rank(n);
+    makeSet(parent,rank,n);
+    int minWeight=0;
+    for(int i=0;i<edges.size();i++){
+        int u=findParent(edges[i][0],parent);
+        int v=findParent(edges[i][1],parent);
+        int w=edges[i][2];
+        if(u!=v){
+            minWeight+=w;
+            unionSet(u,v,parent,rank);
+        }
+    }
+    return minWeight;
+
+    
+    
+}

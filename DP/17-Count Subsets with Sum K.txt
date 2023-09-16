@@ -1,0 +1,88 @@
+memoization
+-----------------------------------------------------
+int mod =(int) 1e9 + 7;
+int findWaysUtil(int ind, int target, vector<int>& arr, vector<vector<int>> &dp){
+    if(target==0)
+        return 1;
+    
+    if(ind == 0)
+        return arr[0] == target;
+    
+    if(dp[ind][target]!=-1)
+        return dp[ind][target]%mod;
+        
+    int notTaken = findWaysUtil(ind-1,target,arr,dp)%mod;
+    
+    int taken = 0;
+    if(arr[ind]<=target)
+        taken = findWaysUtil(ind-1,target-arr[ind],arr,dp)%mod;
+        
+    return dp[ind][target]= (notTaken + taken)%mod;;
+}
+int findWays(vector<int>& num, int k)
+{
+	// Write your code here.
+	int n = num.size();
+    vector<vector<int>> dp(n,vector<int>(k+1,-1));
+    return findWaysUtil(n-1,k,num,dp);
+}
+---------------------------------------------------------
+DP
+---------------------------------------------------------
+int n = num.size();
+    vector<vector<int>> dp(n,vector<int>(k+1,0));
+	for(int i=0;i<n;i++){
+		dp[i][0]=1;
+	}
+	if(num[0]<k+1){
+		dp[0][num[0]]=1;
+	}
+	
+	for(int i=1;i<n;i++){
+		for(int j=1;j<=k;j++){
+			int notTaken = dp[i-1][j]%mod;
+    
+    		int taken = 0;
+    		if(num[i]<=j)
+        		taken = dp[i-1][j-num[i]]%mod;
+    		dp[i][j]= (notTaken + taken)%mod;
+		}
+	}
+    return dp[n-1][k];
+
+
+-------------------------------------------------------
+space optimisation
+-----------------------------------------------------
+int mod =(int) 1e9 + 7;
+int findWays(vector<int>& num, int k)
+{
+	// Write your code here.
+	int n = num.size();
+	vector<int> dp(k+1,0);
+	if(num[0]<k+1){
+		dp[num[0]]=1;
+	}
+	
+	for(int i=1;i<n;i++){
+		vector<int> dummy(k+1,0);
+		for(int j=1;j<=k;j++){
+			int notTaken = dp[j]%mod;
+    
+    		int taken = 0;
+    		if(num[i]<=j){
+				if(j-num[i]==0){
+					taken=1;
+				}
+				else{
+					taken = dp[j-num[i]]%mod;
+				}
+			}
+
+        		
+    		dummy[j]= (notTaken + taken)%mod;
+		}
+		dp=dummy;
+	}
+    return dp[k];
+}

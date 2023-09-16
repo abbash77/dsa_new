@@ -1,0 +1,95 @@
+memoization
+-----------------------------------------------------------
+int recur(vector<int> weight, vector<int> value, int n, int maxWeight,vector<vector<int>> &dp){
+
+	if(n==0){
+		if(maxWeight>=weight[0]){
+			return value[0];
+		}
+		return 0;
+	}
+	if(dp[n][maxWeight]!=-1){
+		return dp[n][maxWeight];
+	}
+	int notPick=recur(weight,value,n-1,maxWeight,dp);
+	int pick=0;
+	if(maxWeight>=weight[n]){
+		pick=value[n]+recur(weight,value,n-1,maxWeight-weight[n],dp);
+	}
+	return dp[n][maxWeight]=max(notPick,pick);
+}
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	// Write your code here
+	vector<vector<int>> dp(n,vector<int>(maxWeight+1,-1));
+	return recur(weight,value,n-1,maxWeight,dp);
+}
+-----------------------------------------------
+DP
+-------------------------------------------------------
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	// Write your code here
+	vector<vector<int>> dp(n,vector<int>(maxWeight+1,0));
+	for(int i=weight[0];i<=maxWeight;i++){
+		dp[0][i]=value[0];
+	}
+	for(int i=1;i<n;i++){
+		for(int j=1;j<=maxWeight;j++){
+			int notPick=dp[i-1][j];
+			int pick=INT_MIN;
+			if(j>=weight[i]){
+				pick=value[i]+dp[i-1][j-weight[i]];
+			}
+			dp[i][j]=max(notPick,pick);
+		}
+	}
+	return dp[n-1][maxWeight];
+}
+-----------------------------------------------------
+space optimisation
+-------------------------------------------------------
+vector<int> dp(maxWeight+1,0);
+	for(int i=weight[0];i<=maxWeight;i++){
+		dp[i]=value[0];
+	}
+	for(int i=1;i<n;i++){
+		vector<int> dummy(maxWeight+1,0);
+		for(int j=1;j<=maxWeight;j++){
+			int notPick=dp[j];
+			int pick=0;
+			if(j>=weight[i]){
+				if(j-weight[i]>=0){
+					pick+=dp[j-weight[i]];
+				}
+				pick+=value[i];
+			}
+			dummy[j]=max(notPick,pick);
+		}
+		dp=dummy;
+	}
+	return dp[maxWeight];
+----------------------------------------------------
+space optimisation more more
+----------------------------------------------------
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	vector<int> dp(maxWeight+1,0);
+	for(int i=weight[0];i<=maxWeight;i++){
+		dp[i]=value[0];
+	}
+	for(int i=1;i<n;i++){
+		for(int j=maxWeight;j>=1;j--){
+			int notPick=dp[j];
+			int pick=0;
+			if(j>=weight[i]){
+				if(j-weight[i]>=0){
+					pick+=dp[j-weight[i]];
+				}
+				pick+=value[i];
+			}
+			dp[j]=max(notPick,pick);
+		}
+	}
+	return dp[maxWeight];
+}

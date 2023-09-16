@@ -1,0 +1,53 @@
+private:
+        bool loopdetect(Node* head){
+     
+        // your code here
+            Node* slow=head;
+            Node* fast=head;
+            while(fast!=NULL && fast->next!=NULL){
+            	slow=slow->next;
+            	fast=fast->next->next;
+            	if (slow==fast)
+                	return true;
+            }
+            return false;
+        }
+        Node* pos(Node* head){
+            Node* slow=head;
+            Node* fast=head;
+            while(fast!=NULL && fast->next!=NULL){
+                slow=slow->next;
+                fast=fast->next->next;
+                if (slow==fast){
+                    slow=head;
+                    break;
+                }
+            }
+            while(slow!=fast){
+                slow=slow->next;
+                fast=fast->next;
+            }
+            return slow;
+            
+        }
+    public:
+    //Function to remove a loop in the linked list.
+    void removeLoop(Node* head)
+    {
+        // code here
+        // just remove the loop without losing any nodes
+        if(!loopdetect(head)){
+            return;
+        }
+        else{
+            Node* slow=pos(head);
+            Node* fast=slow;
+            
+            while(slow->next!=fast){
+                slow=slow->next;
+            }
+            slow->next=NULL;
+            
+        }
+        
+    }

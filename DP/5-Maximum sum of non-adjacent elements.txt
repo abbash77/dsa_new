@@ -1,0 +1,64 @@
+memoization
+------------------------------------------------------------------
+int recur(vector<int> &nums,vector<int> &dp,int n){
+    if(n<0){
+        return 0;
+    }
+    if(n==0){
+        return nums[0];
+    }
+    if(dp[n]!=-1){
+        return dp[n];
+    }
+
+    int pick=nums[n]+recur(nums,dp,n-2);
+    int notPick=recur(nums,dp,n-1);
+    return dp[n]=max(pick,notPick);
+}
+int maximumNonAdjacentSum(vector<int> &nums){
+    // Write your code here.
+    int n=nums.size();
+    vector<int> dp(n+1,-1);
+    return recur(nums,dp,n-1);
+}
+-------------------------------------------------------------------
+DP
+-------------------------------------------------------------------
+int maximumNonAdjacentSum(vector<int> &nums){
+    // Write your code here.
+    int n=nums.size();
+    vector<int> dp(n,0);
+
+    dp[0]=nums[0];
+
+    // return recur(nums,dp,n-1);
+    for(int i=1;i<dp.size();i++){
+        int p=nums[i];
+        if(i>1){
+            p+=dp[i-2];
+        }
+        int n=dp[i-1];
+        dp[i]=max(p,n);
+    }
+    return dp[n-1];
+}
+-----------------------------------------------------------------------
+space optimisation
+-----------------------------------------------------------------------
+int maximumNonAdjacentSum(vector<int> &nums){
+
+    int n=nums.size();
+    int a=nums[0];
+    int b=0;
+
+    for(int i=1;i<n;i++){
+        int p=nums[i];
+        if(i>1){
+            p+=b;
+        }
+        int n=a;
+        b=a;
+        a=max(p,n);
+    }
+    return a;
+}

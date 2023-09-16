@@ -1,0 +1,16 @@
+bool isIsomorphic(Node *root1,Node *root2)
+    {
+    //add code here.
+        if(root1==NULL && root2==NULL ) return true;
+        if(root1==NULL || root2==NULL) return false;
+        if(root1->data!= root2->data) return false;
+       
+       bool ll=isIsomorphic(root1->left,root2->left);
+       bool rr=isIsomorphic(root1->right,root2->right);
+       bool lr=isIsomorphic(root1->left,root2->right);
+       bool rl=isIsomorphic(root1->right,root2->left);
+       
+       if((ll && rr) || (lr && rl)) return true;
+       
+       return false;
+    }

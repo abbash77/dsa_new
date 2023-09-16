@@ -1,0 +1,39 @@
+public:
+    //Function to find the vertical order traversal of Binary Tree.
+    vector<int> verticalOrder(Node *root)
+    {
+        //Your code here
+        map<int,map<int,vector<int>>> nodes;
+      //map<hd,map<level,vector<ans>>> nodes
+        queue<pair<Node*,pair<int,int>>> q;
+	//int,int ,1.horizontal dist 2. level
+        vector<int> ans;
+        if(root==NULL){
+            return ans;
+        }   
+        q.push(make_pair(root,make_pair(0,0))); 
+        while(!q.empty()){
+            pair<Node*,pair<int,int>> temp=q.front();
+            q.pop();
+            Node* frontNode=temp.first;
+            int horizontalDistance=temp.second.first;
+            int level=temp.second.second;
+            nodes[horizontalDistance][level].push_back(frontNode->data);
+            if(frontNode->left!=NULL){
+                q.push(make_pair(frontNode->left,make_pair(horizontalDistance-1,level+1)));
+            }
+            
+            if(frontNode->right!=NULL){
+                q.push(make_pair(frontNode->right,make_pair(horizontalDistance+1,level+1)));
+            }
+                            
+        }
+        for(auto i:nodes){
+            for(auto j:i.second){
+                for(auto k:j.second){
+                    ans.push_back(k);
+                }
+            }
+        }
+        return ans;
+    }
